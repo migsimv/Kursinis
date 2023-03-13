@@ -1,6 +1,6 @@
 import numpy as np
 
-def get_vertex_degrees(graph):
+def getVertexDegrees(graph):
     a = []
     num_vertices = len(graph)
     for vertex in range(num_vertices):
@@ -13,7 +13,7 @@ def k_core(dat, k):
     while True:
         removed = False
         for i in range(n):
-            degr = get_vertex_degrees(core)
+            degr = getVertexDegrees(core)
             if degr[i] < k and degr[i] > 0:
                 for v in range(n):
                     for s in core[v]:
@@ -26,7 +26,7 @@ def k_core(dat, k):
             break
     return core
 
-def createAdjMatrix(dat): # will not be used in futures
+def createAdjMatrix(dat): # will not be used in future
     V = len(dat)
     adj_matrix = np.array([[0 for _ in range(V)] for _ in range(V)])
     for node, neighbors in dat.items():
@@ -34,7 +34,7 @@ def createAdjMatrix(dat): # will not be used in futures
             adj_matrix[node][neighbor] = 1
     return adj_matrix
 
-def printAdjMatrix(adj_matrix):  # will not be used in futures
+def printAdjMatrix(adj_matrix):  # will not be used in future
     print("  ",*range(len(adj_matrix))) 
     i = 0
     for row in adj_matrix:
@@ -59,7 +59,7 @@ def dfs(graph, visited, vertex, component):
         if not visited[neighbor]:
             dfs(graph, visited, neighbor, component)
 
-def find_connected_components(graph):
+def findConnectedComponents(graph):
     num_vertices = len(graph)
     visited = [False] * num_vertices
     components = []
@@ -70,15 +70,26 @@ def find_connected_components(graph):
             components.append(component)
     return components
 
+def getResult(graph):
+    result = []
+    for vertex in range(len(graph)):
+        neighbors = " ".join(str(x) for x in (graph[vertex])) 
+        res = (vertex, "->", neighbors)
+        line = "{} {} {}".format(res[0], res[1], res[2])
+        result.append(line)
+    return result
 
+def saveToFile(graph):
+    with open("output.txt", "w") as file:
+        for res in getResult(graph):
+            file.write(res + "\n")
+
+        
 def main():
     k = 2
     data = readFromFile()
-
-    print(get_vertex_degrees(data))
     core = k_core(data, k)    
-    print(get_vertex_degrees(core))
-    print(find_connected_components(core))
+    saveToFile(core)
 
 if __name__ == '__main__':
     main()
