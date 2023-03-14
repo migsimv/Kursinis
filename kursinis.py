@@ -1,15 +1,21 @@
 import numpy as np
 
+def getEdgesCount(graph):
+    count = 0
+    for edges in graph.values():
+        count += len(edges)
+    return count // 2 
+
 def getVertexDegrees(graph):
-    a = []
+    count = []
     num_vertices = len(graph)
     for vertex in range(num_vertices):
-        a.append(len(graph[vertex]))
-    return a
+        count.append(len(graph[vertex]))
+    return count
 
-def k_core(dat, k):
-    n = len(dat)
-    core = dat.copy()
+def getCore(data, k):
+    n = len(data)
+    core = data.copy()
     while True:
         removed = False
         for i in range(n):
@@ -84,11 +90,16 @@ def saveToFile(graph):
         for res in getResult(graph):
             file.write(res + "\n")
 
-        
+def componentsSize(components):
+    size = []
+    for component in components:
+        size.append(len(component))
+    return size
+
 def main():
     k = 2
     data = readFromFile()
-    core = k_core(data, k)    
+    core = getCore(data, k)  
     saveToFile(core)
 
 if __name__ == '__main__':
