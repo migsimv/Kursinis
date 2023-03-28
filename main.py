@@ -1,3 +1,4 @@
+import dvidalis_grafas
 import numpy as np
 
 def getEdgesCount(graph):
