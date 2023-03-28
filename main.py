@@ -1,4 +1,4 @@
-import dvidalis_grafas
+import bipartite_graph
 import numpy as np
 
 def getEdgesCount(graph):
