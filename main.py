@@ -102,6 +102,14 @@ def main():
     data = readFromFile()
     core = getCore(data, k)  
     saveToFile(core)
+    bipartite = bipartite_graph.random_bipartite_graph([8,5], [4,3,9,9], 1)
+    matrix = bipartite_graph.adj_list_to_adj_matrix(bipartite)
+    i = 0
+    for adj in bipartite:
+        print(i, adj)
+        i += 1
+    for m in matrix:
+        print(m)
 
 if __name__ == '__main__':
     main()

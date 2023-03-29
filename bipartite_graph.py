@@ -1,5 +1,6 @@
 from collections import deque
 import random
+import math
 
 def isBipartite(adj_list):
     V = len(adj_list)
@@ -20,38 +21,30 @@ def isBipartite(adj_list):
                         return False
     return True
 
+def getP(alpha,x,y,n,m):
+    return alpha * (x*y) / math.sqrt(n*m)
 
-def random_bipartite_graph(n1, n2, p): #TODO aprasyti funkcija gauti p
-    V = n1 + n2
+
+def random_bipartite_graph(n1, n2, alpha): 
+    V = len(n1) + len(n2)
     adj_list = [[] for i in range(V)]
-    for i in range(n1):
-        for j in range(n1, V):
-            if random.random() < p:
+    for i in range(len(n1)):
+        f = 0
+        for j in range(len(n1), V):
+            p = getP(alpha,n1[i],n2[f],len(n1), len(n2))
+            a =  random.random()
+            print(p, a)
+            if a < p:
                 adj_list[i].append(j)
                 adj_list[j].append(i)
-
+            f += 1
     return adj_list
 
 def adj_list_to_adj_matrix(adj_list):
     n = len(adj_list)
     adj_matrix = [[0 for i in range(n)] for j in range(n)]
-    
     for i in range(n):
         for j in adj_list[i]:
             adj_matrix[i][j] = 1
-            
     return adj_matrix
 
-def main():
-    adj_list = random_bipartite_graph(8, 3, 0.5)
-    matrix = adj_list_to_adj_matrix(adj_list)
-    i = 0
-    for adj in adj_list:
-        print(i, adj)
-        i += 1
-    for m in matrix:
-        print(m)
-    print(isBipartite(adj_list))
-
-if __name__ == '__main__':
-    main()
