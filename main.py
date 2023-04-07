@@ -1,6 +1,29 @@
 import bipartite_graph
 import numpy as np
 
+def findConnectedActors(graph, n): #TODO turetu grazinti tik aktoriu grafa
+    neighbors = {}
+    for vertex, edges in graph.items():
+        for neighbor in edges:
+            if neighbor not in neighbors:
+                neighbors[neighbor] = [vertex]
+            else:
+                neighbors[neighbor].append(vertex)
+
+    new_graph = {}
+    for vertex, edges in graph.items():
+        same_neighbors = []
+        for neighbor in edges:
+            same_neighbors += neighbors[neighbor]
+        same_neighbors = set(same_neighbors)
+        same_neighbors.discard(vertex)
+        if same_neighbors:
+            new_graph[vertex] = list(same_neighbors)
+
+    print(createAdjMatrix(graph))
+    print(createAdjMatrix(new_graph))
+
+
 def getEdgesCount(graph):
     count = 0
     for edges in graph.values():
@@ -100,16 +123,11 @@ def componentsSize(components):
 def main():
     k = 2
     data = readFromFile()
-    core = getCore(data, k)  
+    # print(data)
+    core = getCore(data, k) 
     saveToFile(core)
     bipartite = bipartite_graph.random_bipartite_graph([8,5], [4,3,9,9], 1)
-    matrix = bipartite_graph.adj_list_to_adj_matrix(bipartite)
-    i = 0
-    for adj in bipartite:
-        print(i, adj)
-        i += 1
-    for m in matrix:
-        print(m)
+    findConnectedActors(bipartite,0)
 
 if __name__ == '__main__':
     main()
