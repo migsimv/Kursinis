@@ -20,9 +20,12 @@ def findConnectedActors(graph, n): #TODO turetu grazinti tik aktoriu grafa
         if same_neighbors:
             new_graph[vertex] = list(same_neighbors)
 
-    print(createAdjMatrix(graph))
-    print(createAdjMatrix(new_graph))
-
+    # print(createAdjMatrix(graph))
+    # print(createAdjMatrix(new_graph))
+    # for res in getResult(graph):
+    #     print(res)
+    for res in getResult(new_graph):
+        print(res)
 
 def getEdgesCount(graph):
     count = 0
@@ -126,7 +129,12 @@ def main():
     # print(data)
     core = getCore(data, k) 
     saveToFile(core)
-    bipartite = bipartite_graph.random_bipartite_graph([8,5], [4,3,9,9], 1)
+    # x 100 3
+    # y 200 4
+    x = [2] * 100
+    y = [4] * 200
+    bipartite = bipartite_graph.random_bipartite_graph(x,y, 1)
+    # print(getResult(bipartite))
     findConnectedActors(bipartite,0)
 
 if __name__ == '__main__':
