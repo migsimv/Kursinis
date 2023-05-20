@@ -1,9 +1,10 @@
 import bipartite_graph
 import numpy as np
 
-def findConnectedActors(graph, n): #TODO turetu grazinti tik aktoriu grafa
+def findConnectedActors(x,graph): 
     neighbors = {}
-    for vertex, edges in graph.items():
+    for i in range(x):
+        vertex, edges = list(graph.items())[i]
         for neighbor in edges:
             if neighbor not in neighbors:
                 neighbors[neighbor] = [vertex]
@@ -11,19 +12,16 @@ def findConnectedActors(graph, n): #TODO turetu grazinti tik aktoriu grafa
                 neighbors[neighbor].append(vertex)
 
     new_graph = {}
-    for vertex, edges in graph.items():
+    for i in range(x):
+        vertex, edges = list(graph.items())[i]
         same_neighbors = []
         for neighbor in edges:
-            same_neighbors += neighbors[neighbor]
+            same_neighbors += neighbors.get(neighbor, [])
         same_neighbors = set(same_neighbors)
         same_neighbors.discard(vertex)
         if same_neighbors:
             new_graph[vertex] = list(same_neighbors)
 
-    # print(createAdjMatrix(graph))
-    # print(createAdjMatrix(new_graph))
-    # for res in getResult(graph):
-    #     print(res)
     for res in getResult(new_graph):
         print(res)
 
@@ -131,11 +129,11 @@ def main():
     saveToFile(core)
     # x 100 3
     # y 200 4
-    x = [2] * 100
-    y = [4] * 200
-    bipartite = bipartite_graph.random_bipartite_graph(x,y, 1)
-    # print(getResult(bipartite))
-    findConnectedActors(bipartite,0)
+    x = [2] * 10
+    y = [4] * 20
+    # bipartite = bipartite_graph.random_bipartite_graph(x,y, 1)
+    # # print(getResult(bipartite))
+    # findConnectedActors(len(x), bipartite)
 
 if __name__ == '__main__':
     main()
