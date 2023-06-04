@@ -30,19 +30,12 @@ def random_bipartite_graph(n1, n2, alpha):
     for i in range(len(n1)):
         f = 0
         for j in range(len(n1), V):
-            p = getP(alpha,n1[i],n2[f],len(n1), len(n2))
-            a =  random.random()
-            if a < p:
+            p = getP(alpha, n1[i], n2[f], len(n1), len(n2))
+            if random.random() < p:
                 adj_list[i].append(j)
                 adj_list[j].append(i)
             f += 1
-    # for a in adj_list_to_adj_matrix(adj_list):
-        # print (a)
-    bipartiteGraph = {}
-    for i in range(V):
-        bipartiteGraph[i] = adj_list[i]
-        
-    return bipartiteGraph
+    return adj_list
 
 def adj_list_to_adj_matrix(adj_list):
     n = len(adj_list)

@@ -1,29 +1,17 @@
 import bipartite_graph
 import numpy as np
 
-def findConnectedActors(x,graph): 
+def findConnectedActors(x, graph): 
     neighbors = {}
-    for i in range(x):
-        vertex, edges = list(graph.items())[i]
-        for neighbor in edges:
-            if neighbor not in neighbors:
-                neighbors[neighbor] = [vertex]
-            else:
-                neighbors[neighbor].append(vertex)
-
     new_graph = {}
-    for i in range(x):
-        vertex, edges = list(graph.items())[i]
-        same_neighbors = []
-        for neighbor in edges:
-            same_neighbors += neighbors.get(neighbor, [])
-        same_neighbors = set(same_neighbors)
-        same_neighbors.discard(vertex)
-        if same_neighbors:
-            new_graph[vertex] = list(same_neighbors)
 
-    for res in getResult(new_graph):
-        print(res)
+    for i in range(x):
+        for neighbor in graph[i]:
+            neighbors.setdefault(neighbor, []).append(i)
+    for i in range(x):
+        new_graph[i] = list({n for neighbor in graph[i] for n in neighbors.get(neighbor, {}) if n != i})
+
+    return new_graph
 
 def getEdgesCount(graph):
     count = 0
@@ -38,23 +26,20 @@ def getVertexDegrees(graph):
         count.append(len(graph[vertex]))
     return count
 
-def getCore(data, k):
-    n = len(data)
-    core = data.copy()
-    while True:
+def getCore(graph, k):
+    core = graph.copy()
+    degrees = getVertexDegrees(core)
+    removed = True
+    while removed:
         removed = False
-        for i in range(n):
-            degr = getVertexDegrees(core)
-            if degr[i] < k and degr[i] > 0:
-                for v in range(n):
-                    for s in core[v]:
-                        if i == s:
-                            core[v].remove(i)
-                        else:
-                            core[i] = []
+        for i in range( len(graph)):
+            if degrees[i] < k and degrees[i] > 0:
+                for neighbor in core[i]:
+                    core[neighbor].remove(i)
+                    degrees[neighbor] -= 1
+                core.pop(i)
+                degrees[i] = 0
                 removed = True
-        if not removed:
-            break
     return core
 
 def createAdjMatrix(dat): # will not be used in future
@@ -103,9 +88,8 @@ def findConnectedComponents(graph):
 
 def getResult(graph):
     result = []
-    for vertex in range(len(graph)):
-        neighbors = " ".join(str(x) for x in (graph[vertex])) 
-        res = (vertex, "->", neighbors)
+    for key, value in graph.items():
+        res = (key, "->", value)
         line = "{} {} {}".format(res[0], res[1], res[2])
         result.append(line)
     return result
