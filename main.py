@@ -1,4 +1,4 @@
-import bipartite_graph
+import example
 import numpy as np
 
 def findConnectedActors(x, graph): 
@@ -106,18 +106,7 @@ def componentsSize(components):
     return size
 
 def main():
-    k = 2
-    data = readFromFile()
-    # print(data)
-    core = getCore(data, k) 
-    saveToFile(core)
-    # x 100 3
-    # y 200 4
-    x = [2] * 10
-    y = [4] * 20
-    # bipartite = bipartite_graph.random_bipartite_graph(x,y, 1)
-    # # print(getResult(bipartite))
-    # findConnectedActors(len(x), bipartite)
+    example.example()
 
 if __name__ == '__main__':
     main()
