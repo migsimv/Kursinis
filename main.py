@@ -32,13 +32,18 @@ def getCore(graph, k):
     removed = True
     while removed:
         removed = False
-        for i in range( len(graph)):
+        for i in range(len(graph)):
+            if i == 999:
+                print(degrees[i])
             if degrees[i] < k and degrees[i] > 0:
                 for neighbor in core[i]:
                     core[neighbor].remove(i)
                     degrees[neighbor] -= 1
                 core.pop(i)
                 degrees[i] = 0
+                removed = True
+            elif degrees[i] == 0 and core.get(i) is not None:
+                core.pop(i)
                 removed = True
     return core
 
@@ -67,23 +72,24 @@ def readFromFile():
         neighbors = list(map(int, parts[1].split()))
         graph[node] = neighbors
     return graph
-
-def dfs(graph, visited, vertex, component):
-    visited[vertex] = True
-    component.append(vertex)
-    for neighbor in graph[vertex]:
-        if not visited[neighbor]:
-            dfs(graph, visited, neighbor, component)
-
-def findConnectedComponents(graph):
-    num_vertices = len(graph)
-    visited = [False] * num_vertices
+def find_components(graph):
+    visited = set()
     components = []
-    for vertex in range(num_vertices):
-        if not visited[vertex]:
+
+    def dfs(node, component):
+        visited.add(node)
+        component.append(node)
+
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                dfs(neighbor, component)
+
+    for node in graph:
+        if node not in visited:
             component = []
-            dfs(graph, visited, vertex, component)
+            dfs(node, component)
             components.append(component)
+
     return components
 
 def getResult(graph):
