@@ -4,13 +4,11 @@ import numpy as np
 def findConnectedActors(x, graph): 
     neighbors = {}
     new_graph = {}
-
     for i in range(x):
         for neighbor in graph[i]:
             neighbors.setdefault(neighbor, []).append(i)
     for i in range(x):
         new_graph[i] = list({n for neighbor in graph[i] for n in neighbors.get(neighbor, {}) if n != i})
-
     return new_graph
 
 def getEdgesCount(graph):
@@ -33,8 +31,6 @@ def getCore(graph, k):
     while removed:
         removed = False
         for i in range(len(graph)):
-            if i == 999:
-                print(degrees[i])
             if degrees[i] < k and degrees[i] > 0:
                 for neighbor in core[i]:
                     core[neighbor].remove(i)
